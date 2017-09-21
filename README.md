@@ -49,6 +49,11 @@ $ docker run -d \
     lunik/tcloud:latest
 ```
 
+## Heroku
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/tcloud)
+/!\ Heroku don't store any data. Once your app shutdown, you will loose all your login and your files.
+To prevent that you can use [kaffeine](http://kaffeine.herokuapp.com/) to keep your app UP 24/24.
+
 ## ===== Configuration =====
 Modify `config.json`.
 On the first installation, this file could be missing, run `npm run build` to generate a default one.
