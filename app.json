@@ -13,5 +13,8 @@
       "description": "The key to administrate the app.",
       "required": true
     }
+  },
+  "scripts": {
+    "postdeploy": "npm run build"
   }
 }
