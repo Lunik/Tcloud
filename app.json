@@ -15,6 +15,6 @@
     }
   },
   "scripts": {
-    "postdeploy": "npm run build"
+    "postdeploy": "NODE_ENV=dev npm install && npm run build"
   }
 }
