@@ -13,6 +13,10 @@
       "description": "The key to administrate the app.",
       "required": true
     },
-    "HEROKU": "heroku"
+    "HEROKU": {
+      "description": "DON'T TOUCH TO THIS VALUE.",
+      "required": true,
+      "value": "heroku"
+    }
   }
 }
