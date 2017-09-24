@@ -17,7 +17,7 @@
   "environments": {
     "production": {
       "env": {
-        "NODE_ENV": "heroku"
+        "HEROKU": "heroku"
       }
     }
   }
