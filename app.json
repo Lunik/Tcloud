@@ -14,7 +14,7 @@
       "required": true
     },
     "TORRENT_PROVIDERS": {
-      "description": "Torrent providers for search engine, see https://github.com/JimmyLaurent/torrent-search-api#supported-providers for a list of supported provides.",
+      "description": "Torrent providers for search engine, see \"https://github.com/JimmyLaurent/torrent-search-api#supported-providers\" for a list of supported provides.",
       "required": false
     },
     "HEROKU": {
