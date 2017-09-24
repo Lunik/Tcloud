@@ -90,7 +90,7 @@ export default class Config extends EventEmitter {
   }
 
   assignConfig (config) {
-    config.server.port = process.env.PORT || config.server.port
+    config.server.port = parseInt(process.env.PORT) || config.server.port
     Object.assign(this, config)
 
     this.emit('ready')
