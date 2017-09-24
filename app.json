@@ -12,9 +12,13 @@
     "MASTER_KEY": {
       "description": "The key to administrate the app.",
       "required": true
-    },
-    "NODE_ENV": {
-      "value": "heroku"
+    }
+  },
+  "environments": {
+    "production": {
+      "env": {
+        "NODE_ENV": "heroku"
+      }
     }
   }
 }
