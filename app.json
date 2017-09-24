@@ -12,9 +12,9 @@
     "MASTER_KEY": {
       "description": "The key to administrate the app.",
       "required": true
+    },
+    "NODE_ENV": {
+      "value": "heroku"
     }
-  },
-  "scripts": {
-    "postdeploy": "NODE_ENV=dev npm install && npm run build"
   }
 }
