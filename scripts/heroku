@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $HEROKU = "heroku" ]
+if [ "$HEROKU" = "heroku" ]
 then
     NODE_ENV=dev npm install
     npm run build
