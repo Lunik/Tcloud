@@ -4,7 +4,7 @@
   "description": "Filesharing and torrent downloading",
   "main": "index.js",
   "scripts": {
-    "postinstall": "sh ./scripts/heroku",
+    "postinstall": "bash ./scripts/heroku",
     "build": "NODE_ENV=production webpack -p",
     "start": "node build/server.js",
     "dev": "webpack --config dev/webpack.server.config.js",
