@@ -3,6 +3,6 @@
 if [ "$HEROKU" = "heroku" ]
 then
     HEROKU=false
-    NODE_ENV=dev npm install
+    npm install --only=dev
     npm run build
 fi
