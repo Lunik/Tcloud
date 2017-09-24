@@ -14,10 +14,12 @@ export default class Config extends EventEmitter {
     this.location = process.env.CONFIG_PATH || ConfigLocation
     this.log = new Delogger('Config')
 
+    let config
     if (props.sync) {
       try {
         var data = fs.readFileSync(this.location)
-        this.parseConfig(data)
+        config = this.parseConfig(data)
+        this.assignConfig(config)
       } catch (err) {
         if (err.code === 'ENOENT') {
           this.generateConfig()
@@ -30,7 +32,8 @@ export default class Config extends EventEmitter {
         if (err && err.code === 'ENOENT') {
           this.generateConfig()
         } else if (!err) {
-          this.parseConfig(data)
+          config = this.parseConfig(data)
+          this.assignConfig(config)
         } else {
           this.log.error(err)
         }
@@ -39,13 +42,12 @@ export default class Config extends EventEmitter {
   }
 
   generateConfig () {
-    Object.assign(this, template)
+    this.assignConfig(template)
 
     fs.writeFile(this.location, JSON.stringify(template, 'undefined', 2), (err) => {
       if (err) {
         this.log.error(err)
       }
-      this.emit('ready')
     })
   }
 
@@ -84,6 +86,11 @@ export default class Config extends EventEmitter {
     expect(config).to.have.property('torrent').to.be.a('object')
     expect(config.torrent).to.have.property('providers').to.be.a('array')
 
+    return config
+  }
+
+  assignConfig (config) {
+    config.server.port = process.env.PORT || config.server.port
     Object.assign(this, config)
 
     this.emit('ready')
