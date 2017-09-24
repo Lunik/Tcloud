@@ -91,6 +91,7 @@ export default class Config extends EventEmitter {
 
   assignConfig (config) {
     config.server.port = parseInt(process.env.PORT) || config.server.port
+    config.torrent.providers = process.env.TORRENT_PROVIDERS.split(',') || config.torrent.providers
     Object.assign(this, config)
 
     this.emit('ready')
