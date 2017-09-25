@@ -8,6 +8,7 @@ var baseFolder = new Folder(`/${__dirname}/${config.files.path}`, '')
 
 if (!baseFolder.exist) {
   baseFolder.create()
+  baseFolder.initManualWatch(30000)
 }
 
 module.exports = (app) => {

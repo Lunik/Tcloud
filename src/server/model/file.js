@@ -33,6 +33,11 @@ export default class File extends EventEmitter {
       )
     }
   }
+
+  initManualWatch (timeout) {
+    setInterval(() => this.initMetadata(), timeout)
+  }
+
   initMetadata () {
     try {
       let stats = fs.statSync(this.fullPath())
