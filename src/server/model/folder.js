@@ -11,6 +11,14 @@ export default class Folder extends File {
       this.initFolder()
     }
   }
+
+  initManualWatch (timeout) {
+    setInterval(() => {
+      this.initMetadata()
+      this.initFolder()
+    }, timeout)
+  }
+
   initFolder () {
     this.childs = []
     var childs = []
