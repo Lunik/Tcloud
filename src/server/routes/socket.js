@@ -20,9 +20,9 @@ function authorization (data, accept) {
 module.exports = (app, server) => {
   if (config.server.https) {
     app.ioSSL = SocketIO(server.serverSSL)
+    app.ioSSL.set('authorization', authorization)
   }
   app.io = SocketIO(server.server)
 
   app.io.set('authorization', authorization)
-  app.ioSSL.set('authorization', authorization)
 }
