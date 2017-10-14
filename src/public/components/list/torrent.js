@@ -28,7 +28,7 @@ export default class TorrentList extends React.Component {
 
   componentWillMount () {
     this.update()
-    this.socket = io(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
+    this.socket = io.connect(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
     this.socket.on('torrent', (message) => this.updateSocket(message.code, message.peer))
   }
 

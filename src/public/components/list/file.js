@@ -34,7 +34,7 @@ export default class FileList extends React.Component {
   componentWillMount () {
     $(window).on('hashchange', () => this.handleHashCHange())
     this.update()
-    this.socket = io(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
+    this.socket = io.connect(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
     this.socket.on('folder', (folder) => this.updateSocket(folder))
   }
 
