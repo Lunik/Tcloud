@@ -8,7 +8,6 @@ import http from 'http'
 import fs from 'fs'
 import Path from 'path'
 import morgan from 'morgan'
-import SocketIO from 'socket.io'
 
 import EnforceHttps from './module/enforceHttps'
 import Config from '../model/config'
@@ -40,12 +39,11 @@ export default class Server {
       })
 
       this.serverSSL = https.createServer(options, this.app)
-      this.app.ioSSL = SocketIO(this.serverSSL)
     }
 
     this.server = http.createServer(this.app)
-    this.app.io = SocketIO(this.serverSSL)
 
+    require('./socket')(this.app, this)
     require('./auth')(this.app)
     this.baseFolder = require('./folder')(this.app)
     require('./file')(this.app, this.baseFolder)
