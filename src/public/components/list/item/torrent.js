@@ -32,7 +32,7 @@ export default class TorrentListItem extends React.Component {
   componentWillMount () {
     $(window).on('resize', (event) => this.handleWindowResize())
     this.update()
-    this.socket = io(window.location.origin, {transports: ['websocket']})
+    this.socket = io(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
     this.socket.on(`peer-${this.state.peer.uid}`, (peer) => this.updateSocket(peer))
   }
 
