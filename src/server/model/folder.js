@@ -44,6 +44,7 @@ export default class Folder extends File {
         oldChilds[index]._size = child._size
         newChilds.push(oldChilds[index])
       } else {
+        child.on('change', () => this.emit('change'))
         newChilds.push(child)
       }
     }

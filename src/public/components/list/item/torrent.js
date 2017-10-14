@@ -1,6 +1,7 @@
 import React from 'react'
 import List from '@react-mdc/list'
 import $ from 'jquery'
+import io from 'socket.io-client'
 
 import Notify from '../../notification'
 import Color from '../../../color'
@@ -13,9 +14,7 @@ export default class TorrentListItem extends React.Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      updateInterval: null
-    }
+    this.state = {}
     this.initState(props)
   }
 
@@ -33,23 +32,29 @@ export default class TorrentListItem extends React.Component {
   componentWillMount () {
     $(window).on('resize', (event) => this.handleWindowResize())
     this.update()
-    this.setState({
-      updateInterval: setInterval(() => this.update(), 2000)
-    })
+    this.socket = io(window.location.origin, {transports: ['websocket']})
+    this.socket.on(`peer-${this.state.peer.uid}`, (peer) => this.updateSocket(peer))
   }
 
   componentWillUnmount () {
     $(window).off('resize', (event) => this.handleWindowResize())
-    clearInterval(this.state.updateInterval)
-    this.setState({
-      updateInterval: null
-    })
+    this.socket.close()
   }
 
   handleWindowResize () {
     this.setState({
       mobile: window.innerWidth <= 650
     })
+  }
+
+  updateSocket (peer) {
+    try {
+      this.setState({
+        peer: peer
+      })
+    } catch (e) {
+      this.state.peer = peer
+    }
   }
 
   update () {

@@ -1,6 +1,7 @@
 import React from 'react'
 import $ from 'jquery'
 import List from '@react-mdc/list'
+import io from 'socket.io-client'
 
 import Notify from '../notification'
 
@@ -11,8 +12,7 @@ export default class TorrentList extends React.Component {
     super(props)
 
     this.state = {
-      peers: [],
-      updateInterval: null
+      peers: []
     }
 
     this.initState(props)
@@ -28,16 +28,80 @@ export default class TorrentList extends React.Component {
 
   componentWillMount () {
     this.update()
-    this.setState({
-      updateInterval: setInterval(() => this.update(), 30000)
-    })
+    this.socket = io(window.location.origin, {transports: ['websocket']})
+    this.socket.on('torrent', (message) => this.updateSocket(message.code, message.peer))
   }
 
   componentWillUnmount () {
-    clearInterval(this.state.updateInterval)
-    this.setState({
-      updateInterval: null
-    })
+    this.socket.close()
+  }
+
+  updateSocket (code, peer) {
+    let tempPeers = this.state.peers
+
+    let index = tempPeers.findIndex((e) => e.uid === peer.uid)
+    let name = peer.metadata.name ? peer.metadata.name : peer.magnet
+    switch (code) {
+      case 'new':
+        if (index === -1) {
+          Notify({
+            type: 'info',
+            title: 'Start downloading',
+            content: (
+              <p>{name}</p>
+            )
+          })
+          tempPeers.push(peer)
+        }
+        break
+      case 'done':
+        if (index !== -1) {
+          Notify({
+            type: 'info',
+            title: 'Finish downloading',
+            content: (
+              <p>{name}</p>
+            )
+          })
+
+          tempPeers.splice(index, 1)
+        }
+        break
+      case 'stop':
+        if (index !== -1) {
+          Notify({
+            type: 'warning',
+            title: 'Stop downloading',
+            content: (
+              <p>{name}</p>
+            )
+          })
+
+          tempPeers.splice(index, 1)
+        }
+        break
+      case 'error':
+        if (index !== -1) {
+          Notify({
+            type: 'error',
+            title: 'Failed to download',
+            content: (
+              <p>{name}</p>
+            )
+          })
+
+          tempPeers.splice(index, 1)
+        }
+        break
+    }
+
+    try {
+      this.setState({
+        peers: tempPeers
+      })
+    } catch (e) {
+      this.state.peers = tempPeers
+    }
   }
 
   update () {

@@ -5,10 +5,34 @@ import TorrentSearch from '../model/search/torrent'
 
 const searchEngine = new TorrentSearch()
 
+function broadcastChange (io, peer, code) {
+  io.emit('torrent', {
+    code: code,
+    peer: peer
+  })
+}
+
+function broadcastDownload (io, peer) {
+  io.emit(`peer-${peer.uid}`, peer)
+}
+
 module.exports = (app, baseFolder) => {
   var torrent = new Torrent({
     baseFolder: baseFolder
   })
+
+  torrent.on('new', (peer) => broadcastChange(app.io, peer, 'new'))
+  torrent.on('done', (peer) => broadcastChange(app.io, peer, 'done'))
+  torrent.on('stop', (peer) => broadcastChange(app.io, peer, 'stop'))
+  torrent.on('error', (peer) => broadcastChange(app.io, peer, 'error'))
+  torrent.on('download', (peer) => broadcastDownload(app.io, peer))
+  if (app.ioSSL) {
+    torrent.on('new', (peer) => broadcastChange(app.ioSSL, peer, 'new'))
+    torrent.on('done', (peer) => broadcastChange(app.ioSSL, peer, 'done'))
+    torrent.on('stop', (peer) => broadcastChange(app.ioSSL, peer, 'stop'))
+    torrent.on('error', (peer) => broadcastChange(app.ioSSL, peer, 'error'))
+    torrent.on('download', (peer) => broadcastDownload(app.ioSSL, peer))
+  }
 
   app.get('/torrent', (req, res) => {
     res.json(Object.keys(torrent.peers).map((key) => torrent.peers[key]))

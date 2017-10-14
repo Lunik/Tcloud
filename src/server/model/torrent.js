@@ -30,10 +30,13 @@ export default class Torrent extends EventEmitter {
     this.peers[peer.uid].on('stop', (peer) => this.handlePeerStop(peer))
     this.peers[peer.uid].on('error', (peer) => this.handlePeerError(peer))
     this.peers[peer.uid].on('download', (peer) => this.emit('download', peer))
+
+    this.emit('new', peer)
     return this.peers[peer.uid]
   }
 
   handlePeerStop (peer) {
+    this.emit('stop', peer)
     this.cleanup(peer)
   }
 
@@ -55,10 +58,12 @@ export default class Torrent extends EventEmitter {
         this.cleanup(peer)
       })
     }
+    this.emit('done', peer)
   }
 
   handlePeerError (peer) {
     this.log.error(`Unable to download ${peer.magnet}`)
+    this.emit('error', peer)
     delete this.peers[peer.uid]
   }
 

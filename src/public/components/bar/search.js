@@ -127,26 +127,12 @@ export default class SearchBar extends React.Component {
         this.setState({
           loading: false
         })
-
-        Notify({
-          type: 'info',
-          title: 'Torrent will begin shortly',
-          content: (<p>It will appear down here</p>)
-        })
       }
     }).fail((response) => {
       let text = response.responseJSON.err
 
       this.setState({
         loading: false
-      })
-
-      Notify({
-        type: 'error',
-        title: 'Failed to download',
-        content: (
-          <p>{text}</p>
-        )
       })
     })
   }

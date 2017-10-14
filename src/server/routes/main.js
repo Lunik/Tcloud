@@ -4,9 +4,11 @@ import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import https from 'https'
+import http from 'http'
 import fs from 'fs'
 import Path from 'path'
 import morgan from 'morgan'
+import SocketIO from 'socket.io'
 
 import EnforceHttps from './module/enforceHttps'
 import Config from '../model/config'
@@ -27,7 +29,22 @@ export default class Server {
       this.app.use(EnforceHttps({
         port: config.server.https
       }))
+
+      let options = {}
+
+      Object.assign(options, {
+        hostname: config.server.hostname,
+        key: fs.readFileSync(config.server.certs.privatekey),
+        cert: fs.readFileSync(config.server.certs.certificate),
+        ca: fs.readFileSync(config.server.certs.chain)
+      })
+
+      this.serverSSL = https.createServer(options, this.app)
+      this.app.ioSSL = SocketIO(this.serverSSL)
     }
+
+    this.server = http.createServer(this.app)
+    this.app.io = SocketIO(this.serverSSL)
 
     require('./auth')(this.app)
     this.baseFolder = require('./folder')(this.app)
@@ -43,21 +60,14 @@ export default class Server {
   listen () {
     let host = '0.0.0.0'
 
-    let options = {}
-
     if (config.server.https) {
-      Object.assign(options, {
-        hostname: config.server.hostname,
-        key: fs.readFileSync(config.server.certs.privatekey),
-        cert: fs.readFileSync(config.server.certs.certificate),
-        ca: fs.readFileSync(config.server.certs.chain)
-      })
-
       // ssl server
-      this.server = https.createServer(options, this.app).listen(config.server.https, host, () => this.log.info(`Server listening on ${host}:${config.server.https}`))
+      this.serverSSL.listen(config.server.https, host, () => this.log.info(`Server listening on ${host}:${config.server.https}`))
+      this.app.socketSSL = this.app.ioSSL.listen(this.serverSSL)
     }
 
     // http server
-    this.app.listen(config.server.port, host, () => this.log.info(`Server listening on ${host}:${config.server.port}`))
+    this.server.listen(config.server.port, host, () => this.log.info(`Server listening on ${host}:${config.server.port}`))
+    this.app.socket = this.app.io.listen(this.server)
   }
 }

@@ -48,11 +48,6 @@ export default class RemoveToolboxItem extends React.Component {
         })
 
         this.props.onRemove()
-
-        Notify({
-          type: 'info',
-          title: `The peer ${this.props.peer.uid} have been deleted`
-        })
       }
     }).fail((response) => {
       let text = response.responseJSON.err
@@ -71,7 +66,7 @@ export default class RemoveToolboxItem extends React.Component {
     })
   }
 
-  handleClose(){
+  handleClose () {
     this.setState({
       dialogOpen: false
     })

@@ -11,7 +11,16 @@ if (!baseFolder.exist) {
   baseFolder.initManualWatch(30000)
 }
 
+function broadcastChange (io, folder) {
+  io.emit('folder', folder)
+}
+
 module.exports = (app) => {
+  baseFolder.on('change', () => broadcastChange(app.io, baseFolder))
+  if (app.ioSSL) {
+    baseFolder.on('change', () => broadcastChange(app.ioSSL, baseFolder))
+  }
+
   app.get('/folder', (req, res) => {
     res.json(baseFolder)
   })
