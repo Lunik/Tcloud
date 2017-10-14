@@ -61,11 +61,11 @@ export default class Server {
     if (config.server.https) {
       // ssl server
       this.serverSSL.listen(config.server.https, host, () => this.log.info(`Server listening on ${host}:${config.server.https}`))
-      this.app.socketSSL = this.app.ioSSL.listen(this.serverSSL)
+      this.app.socketSSL = this.app.ioSSL.listen(this.serverSSL, host)
     }
 
     // http server
     this.server.listen(config.server.port, host, () => this.log.info(`Server listening on ${host}:${config.server.port}`))
-    this.app.socket = this.app.io.listen(this.server)
+    this.app.socket = this.app.io.listen(this.server, host)
   }
 }
