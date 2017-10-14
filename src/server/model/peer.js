@@ -12,6 +12,10 @@ export default class Peer extends EventEmitter {
     this.magnet = props.magnet || props.link
     this.metadata = {}
     this.started = true
+    this.idle = {
+      date: new Date(),
+      timeout: 500
+    }
 
     if (this.magnet) {
       this.child = ChildProcess.fork(`${__dirname}/module/torrentWorker`, [this.magnet])
@@ -46,7 +50,10 @@ export default class Peer extends EventEmitter {
         this.emit('metadata', this)
         break
       case 'download':
-        this.emit('download', this)
+        if (new Date() - this.idle.date >= this.idle.timeout) {
+          this.idle.date = new Date()
+          this.emit('download', this)
+        }
         break
       case 'done':
         this.started = false

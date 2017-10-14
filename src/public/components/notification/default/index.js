@@ -99,7 +99,8 @@ const style = {
     textAlign: 'left'
   },
   content: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    overflow: 'hidden'
   },
   icon: {
     fill: '#FFFFFF',
