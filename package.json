@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "better-react-spinkit": "^2.0.2",
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "classname": "0.0.0",
     "compression": "^1.7.0",
