@@ -83,11 +83,13 @@ export default class File extends EventEmitter {
   addDownloader () {
     this.downloadCount++
     this.downloading++
+    this.emit('startDownload', this)
     this.lock()
   }
 
   removeDownloader () {
     this.downloading--
+    this.emit('finishDownload', this)
     if (this.downloading <= 0) {
       this.downloading = 0
       this.unlock()

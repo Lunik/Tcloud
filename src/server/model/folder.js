@@ -45,6 +45,10 @@ export default class Folder extends File {
         newChilds.push(oldChilds[index])
       } else {
         child.on('change', () => this.emit('change'))
+        child.on('startDownload', () => this.emit('change'))
+        child.on('finishDownload', () => this.emit('change'))
+        child.on('locked', () => this.emit('change'))
+        child.on('unlocked', () => this.emit('change'))
         newChilds.push(child)
       }
     }
