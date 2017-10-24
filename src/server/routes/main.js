@@ -22,7 +22,9 @@ export default class Server {
     this.app.use(bodyParser.urlencoded({
       extended: true
     }))
-    this.app.use(morgan('[:date[web]] :remote-addr - :method :url - :status :response-time[digits]ms'))
+    morgan.token('remote-ip', function (req, res) { return req.headers['x-forwarded-for'] || req.connection.remoteAddress })
+
+    this.app.use(morgan('[:date[web]] :remote-ip - :method :url - :status :response-time[digits]ms'))
 
     if (config.server.https) {
       this.app.use(EnforceHttps({
