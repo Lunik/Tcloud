@@ -1,8 +1,11 @@
 import Delogger from 'delogger'
+import Crypto from 'crypto-js'
 
 import { follow } from '../model/folder'
 import File from '../model/file'
+import Config from '../model/config'
 
+const config = new Config({sync: true})
 var log = new Delogger('File')
 
 module.exports = (app, baseFolder) => {
@@ -13,9 +16,7 @@ module.exports = (app, baseFolder) => {
   })
 
   app.get('/dl/:file(*)', (req, res) => {
-    var base64File = req.params.file
-    var path = Buffer.from(base64File, 'base64').toString()
-
+    var path = Crypto.Rabbit.decrypt(req.params.file, config.server.masterKey).toString(Crypto.enc.Utf8)
     Download(req, res, path)
   })
 

@@ -2,8 +2,12 @@ import fs from 'fs'
 import Path from 'path'
 import EventEmitter from 'events'
 import Delogger from 'delogger'
+import Crypto from 'crypto-js'
 
 import Folder from './folder'
+import Config from './config'
+
+const config = new Config({sync: true})
 
 export default class File extends EventEmitter {
   constructor (_path, base) {
@@ -117,7 +121,7 @@ export default class File extends EventEmitter {
     let cleanBase = this.base.split('/').slice(2).join('/')
     let url = Path.join('/folder', cleanBase, this.name)
     let download = Path.join('/file', cleanBase, this.name)
-    let copy = Path.join('/dl', Buffer.from(Path.join(cleanBase, this.name)).toString('base64'))
+    let copy = '/dl/' + Crypto.Rabbit.encrypt(Path.join(cleanBase, this.name), config.server.masterKey).toString()
     let path = Path.join(cleanBase, this.name)
     return {
       name: this.name,
