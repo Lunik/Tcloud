@@ -19,6 +19,7 @@ export default class TextInput extends React.Component {
           style={Object.assign(style.input, this.props.style.input)}
           type={this.props.type} id={this.props.id}
           onChange={ (e) => this.props.onChange(e) }
+          list={this.props.list}
         />
         <Textfield.Label htmlFor={this.props.id}>
           {this.props.placeholder}

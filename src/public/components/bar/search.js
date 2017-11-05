@@ -10,6 +10,7 @@ import Form from '../form/default'
 import DialogWindow from '../dialog/default'
 import SearchList from '../list/search'
 import SearchListItem from '../list/item/search'
+import SuggestionInput from '../datalist/suggestion'
 
 export default class SearchBar extends React.Component {
   constructor (props) {
@@ -83,6 +84,8 @@ export default class SearchBar extends React.Component {
   }
 
   search (query) {
+    this.refs.datalist.addItem(query)
+
     this.setState({
       loading: true
     })
@@ -176,7 +179,9 @@ export default class SearchBar extends React.Component {
           ref="input"
           value={this.state.input}
           onChange={ (e) => this.setState({input: e.target.value}) }
-          placeholder="Search, Torrent or Magnet"/>
+          placeholder="Search, Torrent or Magnet"
+          list="search-suggestions"/>
+        <SuggestionInput ref="datalist" id="search-suggestions" />
         <Button style={style.button} text={this.state.status} disabled={this.state.input.length <= 0} />
         <DialogWindow
           open={this.state.dialogOpen}
