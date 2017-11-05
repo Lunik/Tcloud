@@ -23,7 +23,7 @@ export default class CopyToolboxItem extends React.Component {
   }
 
   handleClick () {
-    copy(window.location.origin + this.props.file.copy)
+    copy(window.location.origin + this.props.file.download)
   }
 
   render () {

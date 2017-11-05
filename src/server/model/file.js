@@ -120,8 +120,7 @@ export default class File extends EventEmitter {
   toJSON () {
     let cleanBase = this.base.split('/').slice(2).join('/')
     let url = Path.join('/folder', cleanBase, this.name)
-    let download = Path.join('/file', cleanBase, this.name)
-    let copy = '/dl/' + Crypto.Rabbit.encrypt(Path.join(cleanBase, this.name), config.server.masterKey).toString()
+    let download = '/dl/' + Crypto.Rabbit.encrypt(Path.join(cleanBase, this.name), config.server.masterKey).toString()
     let path = Path.join(cleanBase, this.name)
     return {
       name: this.name,
@@ -133,7 +132,6 @@ export default class File extends EventEmitter {
       childs: this.childs,
       url,
       download: this instanceof Folder ? null : download,
-      copy: this instanceof Folder ? null : copy,
       path: this instanceof Folder ? path : null
     }
   }

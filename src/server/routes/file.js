@@ -9,11 +9,11 @@ const config = new Config({sync: true})
 var log = new Delogger('File')
 
 module.exports = (app, baseFolder) => {
-  app.get('/file/:path((*)/?*)', (req, res) => {
+  /* app.get('/file/:path((*)/?*)', (req, res) => {
     var path = req.params.path
 
     Download(req, res, path)
-  })
+  }) */
 
   app.get('/dl/:file(*)', (req, res) => {
     var path = Crypto.Rabbit.decrypt(req.params.file, config.server.masterKey).toString(Crypto.enc.Utf8)
