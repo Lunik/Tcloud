@@ -13,8 +13,12 @@ export default class FileList extends React.Component {
   constructor (props) {
     super(props)
 
+    this.storageID = '__files'
+
+    let fromCache = this.loadCache() || {}
     this.state = {
-      files: [],
+      files: fromCache.childs || [],
+      size: fromCache.size || 0,
       loading: false,
       updateInterval: null
     }
@@ -67,6 +71,8 @@ export default class FileList extends React.Component {
       this.state.files = folder.childs
       this.state.size = folder.size
     }
+
+    this.saveCache(folder)
   }
 
   update () {
@@ -79,6 +85,8 @@ export default class FileList extends React.Component {
           size: response.size,
           loading: false
         })
+
+        this.saveCache(response)
       }
     }).fail((response) => {
       let text = response.responseJSON.err
@@ -98,9 +106,12 @@ export default class FileList extends React.Component {
   }
 
   changeDir (dir) {
+    let fromCache = this.loadCache() || {}
     this.setState({
       location: dir,
-      loading: true
+      loading: true,
+      files: fromCache.childs || [],
+      size: fromCache.size || 0
     })
     this.update()
   }
@@ -110,6 +121,18 @@ export default class FileList extends React.Component {
     if (bytes === 0) { return '0 b' }
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
     return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`
+  }
+
+  saveCache (folder) {
+    let hash = window.location.hash.substring(1)
+    let base64Hash = btoa(hash)
+    window.localStorage.setItem(`${this.storageID}_${base64Hash}`, JSON.stringify(folder))
+  }
+
+  loadCache () {
+    let hash = window.location.hash.substring(1)
+    let base64Hash = btoa(hash)
+    return JSON.parse(window.localStorage.getItem(`${this.storageID}_${base64Hash}`))
   }
 
   render () {
