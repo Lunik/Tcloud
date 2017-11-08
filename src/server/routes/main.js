@@ -7,9 +7,9 @@ import https from 'https'
 import http from 'http'
 import fs from 'fs'
 import Path from 'path'
-import morgan from 'morgan'
 
 import EnforceHttps from './module/enforceHttps'
+import ResolveUser from './module/resolveUser'
 import Config from '../model/config'
 var config = new Config({sync: true})
 
@@ -23,9 +23,6 @@ export default class Server {
     this.app.use(bodyParser.urlencoded({
       extended: true
     }))
-    morgan.token('remote-ip', function (req, res) { return req.headers['x-forwarded-for'] || req.connection.remoteAddress })
-
-    this.app.use(morgan('[:date[web]] :remote-ip - :method :url - :status :response-time[digits]ms'))
 
     if (config.server.https) {
       this.app.use(EnforceHttps({
@@ -46,6 +43,8 @@ export default class Server {
 
     this.server = http.createServer(this.app)
 
+    this.app.use(ResolveUser())
+    require('./log')(this.app)
     require('./socket')(this.app, this)
     require('./auth')(this.app)
     this.baseFolder = require('./folder')(this.app)

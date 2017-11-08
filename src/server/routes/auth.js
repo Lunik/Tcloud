@@ -1,25 +1,11 @@
 import Crypto from 'crypto-js'
 
 import Config from '../model/config'
-import User from '../model/user'
 
 const config = new Config({sync: true})
 const loginPage = '/login.html'
 
 module.exports = (app) => {
-  app.use((req, res, next) => {
-    if (req.body.username || req.cookies.username) {
-      let user = new User({ username: req.body.username || req.cookies.username })
-      user.on('ready', () => {
-        req.user = user
-        next()
-      })
-    } else {
-      req.user = new User()
-      next()
-    }
-  })
-
   // Check authentification
   app.use((req, res, next) => {
     var user = req.user
