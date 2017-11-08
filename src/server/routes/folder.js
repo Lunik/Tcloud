@@ -22,6 +22,7 @@ module.exports = (app) => {
   }
 
   app.get('/folder', (req, res) => {
+    res.header('Cache-Control', 'no-cache')
     res.json(baseFolder)
   })
 
@@ -29,6 +30,7 @@ module.exports = (app) => {
     var path = req.params.path
     var element = follow(path, baseFolder)
 
+    res.header('Cache-Control', 'no-cache')
     if (element) {
       res.json(element)
     } else {

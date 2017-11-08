@@ -35,6 +35,7 @@ module.exports = (app, baseFolder) => {
   }
 
   app.get('/torrent', (req, res) => {
+    res.header('Cache-Control', 'no-cache')
     res.json(Object.keys(torrent.peers).map((key) => torrent.peers[key]))
   })
 
@@ -76,10 +77,12 @@ module.exports = (app, baseFolder) => {
   })
 
   app.get('/peer', (req, res) => {
+    res.header('Cache-Control', 'no-cache')
     res.json(torrent.peers)
   })
 
   app.get('/peer/:uid(*)', (req, res) => {
+    res.header('Cache-Control', 'no-cache')
     var uid = req.params.uid
 
     if (torrent.peers[uid]) {
