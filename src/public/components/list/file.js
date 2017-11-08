@@ -15,7 +15,8 @@ export default class FileList extends React.Component {
 
     this.state = {
       files: [],
-      loading: false
+      loading: false,
+      updateInterval: null
     }
 
     this.initState(props)
@@ -36,11 +37,13 @@ export default class FileList extends React.Component {
     this.update()
     this.socket = io.connect(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
     this.socket.on('folder', (folder) => this.updateSocket(folder))
+    this.state.updateInterval = setInterval(() => this.update(), 30000)
   }
 
   componentWillUnmount () {
     $(window).off('hashchange', () => this.handleHashCHange())
     this.socket.close()
+    clearInterval(this.state.updateInterval)
   }
 
   handleHashCHange () {

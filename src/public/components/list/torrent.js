@@ -12,7 +12,8 @@ export default class TorrentList extends React.Component {
     super(props)
 
     this.state = {
-      peers: []
+      peers: [],
+      updateInterval: null
     }
 
     this.initState(props)
@@ -30,10 +31,12 @@ export default class TorrentList extends React.Component {
     this.update()
     this.socket = io.connect(window.location.origin, {transports: ['websocket'], secure: window.location.protocol === 'https:'})
     this.socket.on('torrent', (message) => this.updateSocket(message.code, message.peer))
+    this.state.updateInterval = setInterval(() => this.update(), 30000)
   }
 
   componentWillUnmount () {
     this.socket.close()
+    clearInterval(this.state.updateInterval)
   }
 
   updateSocket (code, peer) {
