@@ -64,7 +64,7 @@
     "express": "^4.16.2",
     "fs-extra": "^4.0.2",
     "jquery": "^3.2.1",
-    "material-components-web": "^0.24.0",
+    "material-components-web": "^0.25.0",
     "morgan": "^1.9.0",
     "nedb": "^1.8.0",
     "react": "~15.6.2",
