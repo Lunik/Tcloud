@@ -62,7 +62,7 @@
     "crypto-rand": "0.0.2",
     "delogger": "^0.9.5",
     "express": "^4.16.2",
-    "fs-extra": "^4.0.2",
+    "fs-extra": "^5.0.0",
     "jquery": "^3.2.1",
     "material-components-web": "^0.24.0",
     "morgan": "^1.9.0",
