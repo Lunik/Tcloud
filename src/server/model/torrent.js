@@ -47,7 +47,7 @@ export default class Torrent extends EventEmitter {
 
     var oldPath = peer.metadata.fullPath
     var mainFolder = `${__dirname}/${config.files.path}`
-    var temp = `${mainFolder}/${peer.metadata.name}.hide`
+    var temp = `${__dirname}/${config.files.tmp}/${peer.metadata.name}`
     var newPath = `${mainFolder}/${peer.metadata.name}`
 
     var childs = fs.readdirSync(mainFolder)

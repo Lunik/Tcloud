@@ -19,7 +19,8 @@ const template = {
   'authentification': false,
   'registration': true,
   'files': {
-    'path': 'files/'
+    'path': 'files/',
+    'tmp': '.tmp/'
   },
   'torrent': {
     'providers': []

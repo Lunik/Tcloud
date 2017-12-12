@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 import Config from '../model/config'
 import Folder, { follow } from '../model/folder'
 import File, { parsePath } from '../model/file'
@@ -5,6 +7,13 @@ import File, { parsePath } from '../model/file'
 const config = new Config({sync: true})
 
 var baseFolder = new Folder(`/${__dirname}/${config.files.path}`, '')
+try {
+  fs.mkdirSync(`/${__dirname}/${config.files.tmp}`)
+} catch (e){
+  if (e.code != 'EEXIST'){
+    console.error(e)
+  }
+}
 
 if (!baseFolder.exist) {
   baseFolder.create()
