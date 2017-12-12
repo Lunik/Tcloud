@@ -10,6 +10,11 @@ export default class Folder extends File {
     if (this.exist) {
       this.initFolder()
     }
+
+    this.idle = {
+      date: new Date(),
+      timeout: 1000
+    }
   }
 
   initManualWatch (timeout) {
@@ -57,9 +62,12 @@ export default class Folder extends File {
   }
 
   watchChange (eventType, filename) {
-    this.initMetadata()
-    this.initFolder()
-    this.emit('change')
+    this.updateMetadata()
+    if (new Date() - this.idle.date >= this.idle.timeout) {
+      this.idle.date = new Date()
+      this.initFolder()
+      this.emit('change')
+    }
   }
 
   handleChildRemove (child) {
