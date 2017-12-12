@@ -59,10 +59,12 @@ export default class Torrent extends EventEmitter {
       })
 
       mv.on('close', (code) => {
-        fs.rename(temp, newPath, (err) => {
-          console.log('ok')
-          if (err) this.log.error(err)
-          else this.log.info(`Copied ${oldPath} to ${mainFolder} successfully`)
+        const mv2 = spawn('mv', [temp, newPath])
+        mv2.stderr.on('data', (data) => {
+          this.log.error(data)
+        })
+        mv2.on('close', (code) => {
+          this.log.info(`Copied ${oldPath} to ${mainFolder} successfully`)
 
           this.cleanup(peer)
         })
