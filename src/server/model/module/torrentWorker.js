@@ -1,6 +1,10 @@
 import WebTorrent from 'webtorrent'
 import Delogger from 'delogger'
 
+import Config from '../config'
+
+const config = new Config({sync: true})
+
 class Worker {
   constructor (magnet) {
     this.magnet = magnet
@@ -22,7 +26,9 @@ class Worker {
   }
 
   _start () {
-    this.torrent = this.client.add(this.magnet, {}, (torrent) => {
+    this.torrent = this.client.add(this.magnet, {
+      path: `${__dirname}/../${config.files.tmp}`
+    }, (torrent) => {
       this.torrent = torrent
       this.log.info(`Start ${torrent.name}`)
 

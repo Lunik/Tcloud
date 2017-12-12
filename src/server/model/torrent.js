@@ -45,6 +45,7 @@ export default class Torrent extends EventEmitter {
   handlePeerDone (peer) {
     // var newPath = `${__dirname}/${config.files.path}/${peer.metadata.name}`
 
+    /*
     var oldPath = peer.metadata.fullPath
     var mainFolder = `${__dirname}/${config.files.path}`
     var temp = `${__dirname}/${config.files.tmp}/${peer.metadata.name}`
@@ -73,6 +74,23 @@ export default class Torrent extends EventEmitter {
       this.cleanup(peer)
     }
 
+    */
+
+    var oldPath = peer.metadata.fullPath
+    var mainFolder = `${__dirname}/${config.files.path}`
+    var newPath = `${mainFolder}/${peer.metadata.name}`
+
+    var childs = fs.readdirSync(mainFolder)
+
+    if (childs.indexOf(peer.metadata.name) === -1) {
+      fs.rename(oldPath, newPath, (err) => {
+        if (err) this.log.error(err)
+        this.cleanup(peer)
+      })
+    } else {
+      this.cleanup(peer)
+    }
+
     this.emit('done', peer)
   }
 
@@ -84,7 +102,7 @@ export default class Torrent extends EventEmitter {
 
   cleanup (peer) {
     if (peer.metadata.path) {
-      fs.remove(peer.metadata.path, () => delete this.peers[peer.uid])
+      fs.remove(peer.metadata.fullPath, () => delete this.peers[peer.uid])
     } else {
       delete this.peers[peer.uid]
     }
