@@ -3,7 +3,6 @@ import NProgress from 'nprogress'
 
 NProgress.configure({ showSpinner: false })
 
-console.log(NProgress)
 class Loading {
   constructor () {
     this.progress = NProgress

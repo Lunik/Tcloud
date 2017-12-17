@@ -42,6 +42,7 @@ export default class TorrentListItem extends React.Component {
   }
 
   handleWindowResize () {
+    console.log('ok')
     this.setState({
       mobile: window.innerWidth <= 650
     })
@@ -188,7 +189,7 @@ TorrentListItem.defaultProps = {
       timeRemaining: 1404705
     },
     uid: '000',
-    url: '/folder'
+    url: '/peer/000'
   },
   onRemove: () => {}
 }
