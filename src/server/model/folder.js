@@ -49,11 +49,15 @@ export default class Folder extends File {
         oldChilds[index]._size = child._size
         newChilds.push(oldChilds[index])
       } else {
-        child.on('change', () => this.emit('change'))
-        child.on('startDownload', () => this.emit('change'))
-        child.on('finishDownload', () => this.emit('change'))
-        child.on('locked', () => this.emit('change'))
-        child.on('unlocked', () => this.emit('change'))
+        child.on('change', (file) => this.emit('change', file))
+        child.on('startDownload', (file) => this.emit('change', file))
+        child.on('finishDownload', (file) => this.emit('change', file))
+        child.on('locked', (file) => this.emit('change', file))
+        child.on('unlocked', (file) => this.emit('change', file))
+        child.on('remove', (file) => {
+          this.handleChildRemove(child)
+          this.emit('change', this)
+        })
         newChilds.push(child)
       }
     }
@@ -63,11 +67,9 @@ export default class Folder extends File {
 
   watchChange (eventType, filename) {
     this.updateMetadata()
-    if (new Date() - this.idle.date >= this.idle.timeout) {
-      this.idle.date = new Date()
+    this.emitChange().then(() => {
       this.initFolder()
-      this.emit('change')
-    }
+    })
   }
 
   handleChildRemove (child) {
