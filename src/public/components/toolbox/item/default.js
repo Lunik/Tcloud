@@ -22,7 +22,9 @@ export default class ToolboxItem extends React.Component {
   }
 
   componentWillReceiveProps (props) {
-    this.initState(props)
+    if (props.id !== this.props.id) {
+      this.initState(props)
+    }
   }
 
   handleMouseLeave () {

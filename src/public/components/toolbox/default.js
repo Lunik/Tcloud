@@ -23,7 +23,9 @@ export default class Toolbox extends React.Component {
   }
 
   componentWillReceiveProps (props) {
-    this.initState(props)
+    if (props.id !== this.props.id) {
+      this.initState(props)
+    }
   }
 
   open () {
