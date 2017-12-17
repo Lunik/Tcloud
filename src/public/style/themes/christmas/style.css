@@ -17,10 +17,10 @@ a {
 }
 
 #nprogress .bar {
-    background: var(--orange) !important;
+    background: var(--red) !important;
     height: 3px !important;
 }
 
 #nprogress .peg {
-    box-shadow: 0 0 10px var(--orange), 0 0 5px var(--orange) !important;;
+    box-shadow: 0 0 10px var(--red), 0 0 5px var(--red) !important;;
 }
