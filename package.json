@@ -72,7 +72,7 @@
     "react-material-components-web": "^0.1.18",
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4",
-    "torrent-search-api": "^1.0.21",
+    "torrent-search-api": "^1.0.25",
     "webtorrent": "^0.98.20"
   }
 }
