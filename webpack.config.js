@@ -11,14 +11,7 @@ const BUILD_DIR = __dirname + '/build'
 
 const DEV = process.env.NODE_ENV !== 'production'
 
-const uglifyPlugin = DEV ? new UnminifiedWebpackPlugin() : new UglifyJsPlugin({
-  compress: {
-    warnings: false
-  },
-  output: {
-    comments: false
-  }
-})
+const uglifyPlugin = DEV ? new UnminifiedWebpackPlugin() : new UglifyJsPlugin()
 
 module.exports = [
   {
