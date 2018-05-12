@@ -22,7 +22,7 @@ module.exports = [
       filename: 'server.js'
     },
     module: {
-      loaders: [{
+      rules: [{
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -48,7 +48,7 @@ module.exports = [
       filename: 'torrentWorker.js'
     },
     module: {
-      loaders: [{
+      rules: [{
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -74,7 +74,7 @@ module.exports = [
       filename: 'src/app.js'
     },
     module: {
-      loaders: [{
+      rules: [{
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
